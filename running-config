@@ -1,4 +1,183 @@
-vrf definition demo-bbva
+Building configuration...
+
+Current configuration : 4458 bytes
+!
+! Last configuration change at 10:29:08 UTC Tue Jul 7 2026
+!
+version 17.16
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname router1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition clab-mgmt
+ description clab-mgmt
+ !
  address-family ipv4
  exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
 !
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name lab
+ip cef
+login on-success log
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-6
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-6
+ revocation-check none
+ rsakeypair TP-self-signed-6
+ hash sha512
+!
+!
+crypto pki certificate chain TP-self-signed-6
+ certificate self-signed 01
+  3082031E 30820206 A0030201 02020101 300D0609 2A864886 F70D0101 0D050030 
+  28312630 24060355 04030C1D 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 36301E17 0D323630 37303731 30323932 345A170D 33363037 
+  30363130 32393234 5A302831 26302406 03550403 0C1D494F 532D5365 6C662D53 
+  69676E65 642D4365 72746966 69363130 32393234 5A302831 26302406 03550403 
+  0C1D494F 532D5365 6C662D53 69676E65 642D4365 72746966 69636174 652D3630 
+  82012230 0D06092A 864886F7 0D010101 05000382 010F0030 82010A02 82010100 
+  C8AB151F 6FCA3653 28AD4AD0 0C77F0F5 BE57B661 EEF0D9D7 1CF71E2B AC9C73C6 
+  821D898F CE9E1914 5A8421DB C96D33D7 100A38AB 8E1B3C73 731A3C78 0E443337 
+  721860D3 63E49E86 F3474A2D 8846B5F4 3674B9EC 3B9E97DE 780159AA 36BCC6A3 
+  787E39CA 26955D51 84C2F665 1614F1EC 24B81140 BCC4C4D4 7EF739FA 0BB997A8 
+  156A09EB D813C72B 67B557ED 490AE787 8E904AFC 1EB044E2 2C8D604E EC0B04CA 
+  C372C3CE 320DA096 A8CEC201 09CA8D7A 04FAF14C 91AC4DC9 20CEA2EE B39314C0 
+  5109BCE0 A75DB09E FABAD791 E6CB2318 9B0B6333 8AF53FD2 63DABE8A 26DBD583 
+  6704A3FE 84E08C57 B9ADD2CF A5AF3B88 52E63447 F13E69C3 DE782C8B 014BCC65 
+  02030100 01A35330 51301D06 03551D0E 04160414 2DE26613 6155ACAC B6F7A1E0 
+  8B5001CA AC254F15 301F0603 551D2304 18301680 142DE266 136155AC ACB6F7A1 
+  E08B5001 CAAC254F 15300F06 03551D13 0101FF04 05300301 01FF300D 06092A86 
+  4886F70D 01010D05 00038201 0100872E 7D44E918 FE88E8BB 720E224F EA2E8F2E 
+  ED8F19D5 94871D4F 949C1F30 05E48315 B5FB53C1 1B51F68F 535D178A B392A67E 
+  B5FC8FFE FBFCB0B2 457BA324 358E518A 6D6175C8 5857CB47 5C2D695C 14C98CA6 
+  FAD5EEAA 2B7DC809 45106F1E 8E231179 BB342536 CC2592AB 97FDF71A 9EF4521B 
+  A1D9CE9A EA396832 DADDF9E6 1422E15F 4CF0B541 B186C404 FABA7880 3B3E621B 
+  A3649402 9F7C2AB7 B3922B2E 0514CB9C 6306C9B6 9296E61A DD6595DF 4C2326E8 
+  D31B024C 2BE7508B B3D794E9 52B5CF5B F401750E 8D508B13 6E18F1E3 F301087D 
+  F3E3B4EE 126BF312 A847E1F5 A8AE59A3 51D20640 D143DCFF C27FEAC1 4DC821E5 
+  E3970E36 7CD5F715 EAC0C1EB 0511
+ 	quit
+!
+!
+memory free low-watermark processor 53768
+!
+!
+spanning-tree mode rapid-pvst
+!
+!
+username admin privilege 15 secret 9 $9$1.aK8849XHqOk.$LcYNTGWYjlsn/qJtgXeHn8vOkBIBunzzhwm1iGBm8yk
+username diegorp879 privilege 15 secret 9 $9$9H2DTHrXy.YAPE$Ggs0R6eS.qzaNA6ym2YCe8tYBtRObNUBsHvTP65L4ag
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback123
+ description Loopback_for_testing
+ ip address 192.168.123.1 255.255.255.0
+!
+interface Ethernet0/0
+ description clab-mgmt
+ vrf forwarding clab-mgmt
+ ip address 172.20.30.11 255.255.255.0
+!
+interface Ethernet0/1
+ description APPs
+ ip address 100.100.1.254 255.255.255.0
+!
+interface Ethernet0/2
+ description router2
+ ip address 100.100.2.1 255.255.255.0
+!
+interface Ethernet0/3
+ no ip address
+!
+router rip
+ network 100.0.0.0
+ no auto-summary
+!
+ip forward-protocol nd
+ip forward-protocol udp
+!
+!
+ip http server
+ip http secure-server
+ip route vrf clab-mgmt 0.0.0.0 0.0.0.0 Ethernet0/0 172.20.30.1
+ip ssh bulk-mode 131072
+no logging btrace
+logging trap debugging
+logging origin-id ip
+logging source-interface Ethernet0/0 vrf clab-mgmt
+logging host 172.20.30.101 vrf clab-mgmt
+ipv6 route vrf clab-mgmt ::/0 Ethernet0/0
+!
+snmp-server community public RO
+snmp-server trap-source Ethernet0/0
+snmp-server source-interface informs Ethernet0/0
+!
+!
+control-plane
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login local
+ transport input ssh
+!
+!
+!
+!
+end
