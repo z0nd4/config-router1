@@ -1,8 +1,8 @@
 Building configuration...
 
-Current configuration : 4070 bytes
+Current configuration : 4205 bytes
 !
-! Last configuration change at 10:58:30 UTC Tue Sep 1 2026 by admin
+! Last configuration change at 15:45:19 UTC Tue Sep 1 2026 by admin
 !
 version 17.16
 service timestamps debug datetime msec
@@ -16,6 +16,15 @@ boot-end-marker
 !
 vrf definition clab-mgmt
  description clab-mgmt
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+vrf definition peru
+ description demo-peru
  !
  address-family ipv4
  exit-address-family
@@ -179,13 +188,9 @@ line vty 0 4
 !
 !
 end
-!
-vrf definition peru
- description demo-peru
- !
+vrf definition portugal
+ rd 1234:1234
  address-family ipv4
  exit-address-family
- !
  address-family ipv6
  exit-address-family
-!
